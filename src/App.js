@@ -58,7 +58,6 @@ function App() {
 			</div>
 			<div className="flex justify-center">
 				<iframe
-					width="460px"
 					src="https://www.youtube.com/embed/cmhP2i1aK_k?si=dIvzdlq0dbWED7Jy"
 					title="YouTube video player"
 					frameborder="0"

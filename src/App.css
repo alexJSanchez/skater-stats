@@ -35,3 +35,10 @@ code {
 	border-radius: 10px;
 	transition: width 3s ease;
 }
+@media screen and (max-width: 750px) {
+	iframe {
+		max-width: 100% !important;
+		width: auto !important;
+		height: auto !important;
+	}
+}
