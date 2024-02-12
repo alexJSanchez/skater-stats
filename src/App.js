@@ -30,14 +30,14 @@ function App() {
 	const [response, setResponse] = useState("");
 	useEffect(() => {
 		setStats(data);
-		fetch("http://localhost:5000/books")
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data);
-			})
-			.catch((error) => {
-				console.error("Error fetching data:", error);
-			});
+		// fetch("http://localhost:5000/books")
+		// 	.then((res) => res.json())
+		// 	.then((data) => {
+		// 		console.log(data);
+		// 	})
+		// 	.catch((error) => {
+		// 		console.error("Error fetching data:", error);
+		// 	});
 	}, []);
 
 	return (
