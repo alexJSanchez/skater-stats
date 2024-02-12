@@ -27,8 +27,17 @@ function App() {
 		{ name: "Lip Balance", score: "0%" },
 		{ name: "Manuals", score: "0%" },
 	]);
+	const [response, setResponse] = useState("");
 	useEffect(() => {
 		setStats(data);
+		fetch("http://localhost:5000/books")
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+			})
+			.catch((error) => {
+				console.error("Error fetching data:", error);
+			});
 	}, []);
 
 	return (
@@ -39,9 +48,9 @@ function App() {
 					<img alt="alex walking" src={logo} />
 				</div>
 				<div className="w-full">
-					{stats.map((stat) => {
+					{stats.map((stat, idx) => {
 						return (
-							<div>
+							<div key={idx}>
 								<p>{stat.name}</p>
 								<div className="loader-container">
 									<div
@@ -56,13 +65,13 @@ function App() {
 					})}
 				</div>
 			</div>
+
 			<div className="flex justify-center">
 				<iframe
 					src="https://www.youtube.com/embed/cmhP2i1aK_k?si=dIvzdlq0dbWED7Jy"
 					title="YouTube video player"
-					frameborder="0"
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-					allowfullscreen
+					allowFullScreen
 				></iframe>
 			</div>
 		</div>
