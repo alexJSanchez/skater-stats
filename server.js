@@ -44,12 +44,12 @@ server.get("/riders", (req, res) => {
 		});
 });
 
-server.get("/books", (req, res) => {
+server.get("/riders/:id", (req, res) => {
 	if (ObjectId.isValid(req.params.id)) {
-		db.collections("books")
-			.findOne({ _id: req.params.id })
+		db.collection("riders")
+			.findOne({ customer_id: 2 })
 			.then((doc) => {
-				res.status(200).json(res);
+				res.status(200).json(doc);
 			})
 			.catch((err) => {
 				res.status(500).json({ error: "cant fetch" });
@@ -60,13 +60,13 @@ server.get("/books", (req, res) => {
 });
 
 server.post("/riders", (req, res) => {
-	const books = req.body;
+	const rider = req.body;
 	db.collection("riders")
-		.insertOne(books)
-		.then((res) => {
-			res.status(201).json({ message: "successful insert" });
+		.insertOne(rider)
+		.then((result) => {
+			res.status(201).json(result);
 		})
 		.catch((err) => {
-			res.status(500).json({ message: "could not create a new document" });
+			res.status(500).json({ error: err });
 		});
 });
