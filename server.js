@@ -28,7 +28,7 @@ connectToDb((err) => {
 		db = getDb();
 	}
 });
-
+// get all riders
 server.get("/riders", (req, res) => {
 	let riders = [];
 
@@ -43,11 +43,11 @@ server.get("/riders", (req, res) => {
 			res.status(500).json({ error: "could not fetch the documents" });
 		});
 });
-
+// return one rider
 server.get("/riders/:id", (req, res) => {
 	if (ObjectId.isValid(req.params.id)) {
 		db.collection("riders")
-			.findOne({ customer_id: 2 })
+			.findOne({ _id: new ObjectId(req.params.id) })
 			.then((doc) => {
 				res.status(200).json(doc);
 			})
@@ -58,15 +58,53 @@ server.get("/riders/:id", (req, res) => {
 		res.status(400).json({ error: "not a valid id" });
 	}
 });
-
+// post a new rider
 server.post("/riders", (req, res) => {
 	const rider = req.body;
-	db.collection("riders")
-		.insertOne(rider)
-		.then((result) => {
-			res.status(201).json(result);
-		})
-		.catch((err) => {
-			res.status(500).json({ error: err });
-		});
+	const { name, city, state, stance } = rider;
+	if (!name || !city || !state || !stance) {
+		res
+			.status(400)
+			.json({ message: "Make sure payload has name/city/state/stance" });
+	} else {
+		db.collection("riders")
+			.insertOne(rider)
+			.then((result) => {
+				res.status(201).json(result); // Return the inserted document
+			})
+			.catch((err) => {
+				res.status(500).json({ error: err.message });
+			});
+	}
+});
+// update a rider
+server.patch("/riders/:id", (req, res) => {
+	const updates = req.body;
+	if (ObjectId.isValid(req.params.id)) {
+		db.collection("riders")
+			.updateOne({ _id: new ObjectId(req.params.id) }, { $set: updates })
+			.then((doc) => {
+				res.status(200).json(doc);
+			})
+			.catch((err) => {
+				res.status(500).json({ error: "cant fetch" });
+			});
+	} else {
+		res.status(400).json({ error: "not a valid id" });
+	}
+});
+// delete a rider
+server.delete("/riders/:id", (req, res) => {
+	if (ObjectId.isValid(req.params.id)) {
+		db.collection("riders")
+			.deleteOne({ _id: new ObjectId(req.params.id) })
+			.then((result) => {
+				res.status(200).json(result);
+			})
+			.catch((err) => {
+				res.status(500).json({ error: "cant delete" });
+			});
+	} else {
+		res.status(400).json({ error: "not a valid id" });
+	}
 });
