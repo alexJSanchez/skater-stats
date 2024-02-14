@@ -40,7 +40,7 @@ server.get("/riders", (req, res) => {
 			res.status(200).json(riders);
 		})
 		.catch((err) => {
-			res.status(500).json({ error: "could not fetch the documents" });
+			res.status(400).json({ error: "could not fetch the documents" });
 		});
 });
 // return one rider
@@ -73,7 +73,7 @@ server.post("/riders", (req, res) => {
 				res.status(201).json(result); // Return the inserted document
 			})
 			.catch((err) => {
-				res.status(500).json({ error: err.message });
+				res.status(400).json({ error: err.message });
 			});
 	}
 });
