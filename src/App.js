@@ -28,23 +28,27 @@ function App() {
 		{ name: "Lip Balance", score: "0%" },
 		{ name: "Manuals", score: "0%" },
 	]);
-	const [videoUrl, setVideoUrl] = useState(
-		"https://www.youtube.com/embed/cmhP2i1aK_k?si=dIvzdlq0dbWED7Jy"
-	);
+	const [videoUrl, setVideoUrl] = useState([
+		"https://www.youtube.com/embed/cmhP2i1aK_k?si=dIvzdlq0dbWED7Jy",
+	]);
 	const [stance, setStance] = useState("");
+	const [city, setCity] = useState("");
+	const [state, setState] = useState("");
 	useEffect(() => {
-		// fetch("http://localhost:5000/books")
-		//   .then((res) => res.json())
-		//   .then((data) => {
-		//     setStats(data[0].stats);
-		//     setVideoUrl(data[0].videos[0]);
-		//     setStance(data[0].stance);
-		//     setName(data[0].name);
-		//     console.log(data);
-		//   })
-		//   .catch((error) => {
-		//     console.error("Error fetching data:", error);
-		//   });
+		fetch("http://localhost:5000/riders/65cf05555b23f0a163f799d0")
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				setStats(data.stats);
+				setVideoUrl(data.video);
+				setStance(data.stance);
+				setName(data.name);
+				setCity(data.city);
+				setState(data.state);
+			})
+			.catch((error) => {
+				console.log(("Error fetching data:", error));
+			});
 	}, []);
 
 	return (
@@ -58,10 +62,14 @@ function App() {
 					<h2 style={{ fontSize: "20px", textTransform: "capitalize" }}>
 						Stance: {stance}
 					</h2>
-					{stats.map((stat, idx) => {
+					<p style={{ textTransform: "capitalize" }}>
+						{city},{state}
+					</p>
+					{stats.map((stat, index) => {
 						return (
-							<div key={idx}>
+							<div key={index}>
 								<p>{stat.name}</p>
+
 								<div className="loader-container">
 									<div
 										className="loader-bar flex justify-end"
@@ -75,15 +83,16 @@ function App() {
 					})}
 				</div>
 			</div>
-
-			<div className="flex justify-center">
-				<iframe
-					src={videoUrl}
-					title="YouTube video player"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-					allowFullScreen
-				></iframe>
-			</div>
+			{videoUrl.map((url, index) => (
+				<div key={index} className="flex justify-center">
+					<iframe
+						src={url}
+						title="YouTube video player"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						allowFullScreen
+					></iframe>
+				</div>
+			))}
 		</div>
 	);
 }
